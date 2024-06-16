@@ -96,21 +96,19 @@ function Result() {
 
     // console.log(unsorted_track_data);
 
-    await unsorted_track_data.forEach((element) => {
-      track_names = track_names + element[1] + " ; ";
+    await unsorted_track_data.forEach((element,index) => {
+      track_names = track_names + index + ":"+ element[1] + " ; ";
     });
 
+    
     const gemini_response = await model.generateContent(
-      "I am giving you a list of songs, starting from index 0, return the song numbers which are not bhojpuri or haryanvi, return the numbers separated by space only" +
+      "I am giving you a list of songs, return the song numbers which are not bhojpuri or haryanvi (check each song using lyrics from youtube), return the numbers separated by space only, recheck your answer by checking lyrics of each song - " +
         track_names
     );
-    const gemini_response_2 = await model.generateContent(
-      "I am giving you a list of songs, starting from index 0, return the song numbers which are not bhojpuri or haryanvi, return the numbers separated by space only" +
-        track_names
-    );
-    const response = await gemini_response_2.response;
+   
+    const response = await gemini_response.response;
     const text = response.text();
-    console.log(text);
+    // console.log(text);
 
     text
       .trim()
